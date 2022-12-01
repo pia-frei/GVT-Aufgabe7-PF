@@ -1,0 +1,58 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta title="EA7"/>
+		<script src="ext/gl-matrix.js"></script>
+		<script src="vertexData_torus.js"></script>
+		<script src="vertexData_plane.js"></script>
+		<script src="vertexData_cylinder.js"></script>
+		<script src="app.js"></script>
+		<script type="x-shader/x-vertex" id="vertexshader">
+			precision mediump float;
+
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+			
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+			uniform mat3 uNMatrix;
+			uniform vec4 uColor;
+			
+			varying vec4 vColor;
+			varying float displacement;
+			
+			void main(){
+				gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+
+				vec3 tNormal = uNMatrix * aNormal;
+
+				vColor = uColor;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+			    gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);
+
+			}
+		</script>
+	</head>
+	<body onload="app.start()">
+		<canvas id="canvas" width="700" height="700"></canvas>
+		<div>
+			<p class="explanation">
+				<b>O:</b> Ortho <br/>
+				<b>F:</b> Frustum <br/>
+				<b>P:</b> Perspective <br/>
+				<b>W:</b> Camera up<br/>
+				<b>A:</b> Camera left <br/>
+				<b>S:</b> Camera down <br/>
+				<b>D:</b> Camera right <br/>
+			</p>
+		</div>
+
+	</body>
+</html>
